@@ -1,0 +1,38 @@
+{
+  "folders": [
+    {
+      "name": "root",
+      "files": [
+        {
+          "name": "a.csv",
+          "path": "/folders/a.csv",
+          "createdBy": "John",
+          "createdOn": "2024-01-15"
+        },
+        {
+          "name": "b.csv",
+          "path": "/folders/b.csv",
+          "createdBy": "Jane",
+          "createdOn": "2024-01-15"
+        },
+        {
+          "name": "c.csv",
+          "path": "/folders/c.csv",
+          "createdBy": "Mark",
+          "createdOn": "2024-03-10"
+        }
+      ]
+    },
+    {
+      "name": "subfolder",
+      "files": [
+        {
+          "name": "d.csv",
+          "path": "/folders/subfolder/d.csv",
+          "createdBy": "Susan",
+          "createdOn": "2024-04-25"
+        }
+      ]
+    }
+  ]
+}
