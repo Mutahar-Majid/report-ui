@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect, useMemo } from 'react';
-import { Folder, FileText } from 'lucide-react';
+import { Folder, FileText, BarChart2 } from 'lucide-react';
 import Pagination from './components/Pagination';
 import ReportTable from './components/ReportTable';
 import { readCSV, getDirectoryStructure } from '../../utils/csvServices';
@@ -8,31 +8,9 @@ import TableFilters from './components/TableFilters';
 import GroupFilters from './components/GroupFilters';
 import NoResultsPage from './components/NoResultsPage';
 import NoFilesPage from './components/NoFilesPage';
+import FileUpload from './components/FileUpload';
+import { initialState, reducer } from './utils/constants';
 
-// Initial state for the reducer
-const initialState = {
-  folders: [],
-  selectedFolder: null,
-  selectedFile: null,
-  reportData: [],
-  pageSize: 20,
-  currentPage: 1,
-  createdBy: '',
-  createdOn: '',
-};
-
-// Reducer function to manage state
-function reducer(state, action) {
-  switch (action.type) {
-    case 'SET_DATA':
-      return { ...state, [action.context]: action.payload };
-    case 'SET_STATE': {
-      return action.payload;
-    }
-    default:
-      return state;
-  }
-}
 
 // Main Dashboard Component
 const DynamicReportDashboard = () => {
@@ -126,8 +104,11 @@ const DynamicReportDashboard = () => {
 
   return (
     <div className='container mx-auto p-4'>
-      <div className='title text-2xl mb-4 text-center'>Reports Dashboard</div>
-      <div className='bg-white shadow-2xl border-t-4 rounded-lg overflow-hidden p-4'>
+      <div className='hero bg-blue-500 text-white p-4 rounded-lg shadow-md text-center w-max mx-auto mb-2 flex items-center'>
+          <BarChart2 className='w-8 h-8 mx-auto' />
+          <h1 className='text-2xl font-bold flex-1'>Reports Dashboard</h1>
+      </div>
+      <div className='bg-white shadow-2xl border-t-4 rounded-lg overflow-hidden p-4 relative max-w-[80%] mx-auto'>
         <Tabs onSelect={handleFolderChange}>
           {/* Render folders */}
           <TabList>
@@ -137,6 +118,10 @@ const DynamicReportDashboard = () => {
               </Tab>
             ))}
           </TabList>
+          {/* File Upload */}
+          {/* File Upload */}
+          <FileUpload setData={setData} />
+
           {/* Group filters */}
           {!!selectedFolder?.files.length && (
             <GroupFilters
@@ -159,11 +144,10 @@ const DynamicReportDashboard = () => {
                         <button
                           key={file.name}
                           onClick={() => setData('selectedFile', file)}
-                          className={`px-4 py-2 rounded flex items-center ${
-                            selectedFile?.name === file.name
+                          className={`px-4 py-2 rounded flex items-center ${selectedFile?.name === file.name
                               ? 'bg-blue-500 text-white'
                               : 'bg-gray-200 hover:bg-gray-300'
-                          }`}
+                            }`}
                         >
                           <FileText className='w-4 h-4 mr-2' />
                           {file.name}

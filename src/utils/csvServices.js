@@ -40,4 +40,20 @@ async function getDirectoryStructure() {
   }
 }
 
+export const uploadCSV = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  const response = await fetch('http://localhost:8080/api/upload', {
+    method: 'POST',
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to upload file: ${response.statusText}`);
+  }
+
+  return await response.json();
+};
+
 export { readCSV, getDirectoryStructure };

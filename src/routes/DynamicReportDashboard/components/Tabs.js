@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Home, FileText } from 'lucide-react'; // Import icons from Lucide
 
 // Create a context for the Tabs component
 const TabsContext = createContext();

@@ -20,6 +20,12 @@
           "path": "/folders/c.csv",
           "createdBy": "Mark",
           "createdOn": "2024-03-10"
+        },
+        {
+          "name": "test.csv",
+          "path": "/folders/test.csv",
+          "createdBy": "Unknown",
+          "createdOn": "2024-12-01"
         }
       ]
     },
@@ -34,7 +40,7 @@
         }
       ]
     },
-    { 
+    {
       "name": "emptySubfolder",
       "files": []
     }
