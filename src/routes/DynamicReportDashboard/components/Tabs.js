@@ -6,12 +6,12 @@ const TabsContext = createContext();
 
 export const Tabs = ({ defaultTab = 0, onSelect, children }) => {
   const [selectedTab, setSelectedTab] = useState(defaultTab);
-  function handleSelect() {
-    onSelect && onSelect(selectedTab);
-    setSelectedTab(selectedTab);
+  function handleSelect(tab) {
+    onSelect && onSelect(tab);
+    setSelectedTab(tab);
   }
   return (
-    <TabsContext.Provider value={{ selectedTab, setSelectedTab }}>
+    <TabsContext.Provider value={{ selectedTab, handleSelect }}>
       <div className="tabs">{children}</div>
     </TabsContext.Provider>
   );
@@ -22,12 +22,12 @@ export const TabList = ({ children }) => {
 };
 
 export const Tab = ({ children, tab, icon: Icon }) => {
-  const { selectedTab, setSelectedTab } = useContext(TabsContext);
+  const { selectedTab, handleSelect } = useContext(TabsContext);
   const isSelected = selectedTab === tab;
 
   return (
     <button
-      onClick={() => setSelectedTab(tab)}
+      onClick={() => handleSelect(tab)}
       className={`px-4 py-2 rounded flex items-center space-x-2 ${isSelected ? 'bg-blue-500 text-white border-b-4 border-blue-900' : 'bg-gray-200 hover:bg-gray-300'}`}
     >
       {Icon && <Icon className="w-4 h-4" />}

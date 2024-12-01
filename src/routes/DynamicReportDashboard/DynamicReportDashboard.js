@@ -7,6 +7,7 @@ import { Tabs, TabList, Tab, TabPanels, TabPanel } from './components/Tabs';
 import TableFilters from './components/TableFilters';
 import GroupFilters from './components/GroupFilters';
 import NoResultsPage from './components/NoResultsPage';
+import NoFilesPage from './components/NoFilesPage';
 
 // Initial state for the reducer
 const initialState = {
@@ -25,6 +26,9 @@ function reducer(state, action) {
   switch (action.type) {
     case 'SET_DATA':
       return { ...state, [action.context]: action.payload };
+    case 'SET_STATE': {
+      return action.payload;
+    }
     default:
       return state;
   }
@@ -106,11 +110,25 @@ const DynamicReportDashboard = () => {
     );
   }, [selectedFolder, createdBy, createdOn]);
 
+  function handleFolderChange(index) {
+    dispatch({
+      type: 'SET_STATE',
+      payload: {
+        ...initialState,
+        folders: state.folders,
+        selectedFolder: state.folders[index],
+        selectedFile: state.folders[index].files.length
+          ? state.folders[index].files[0]
+          : null,
+      },
+    });
+  }
+
   return (
     <div className='container mx-auto p-4'>
       <div className='title text-2xl mb-4 text-center'>Reports Dashboard</div>
       <div className='bg-white shadow-2xl border-t-4 rounded-lg overflow-hidden p-4'>
-        <Tabs onSelect={(index) => setData('selectedFolder', folders[index])}>
+        <Tabs onSelect={handleFolderChange}>
           {/* Render folders */}
           <TabList>
             {folders.map((folder, index) => (
@@ -120,7 +138,7 @@ const DynamicReportDashboard = () => {
             ))}
           </TabList>
           {/* Group filters */}
-          {!!selectedFolder && (
+          {!!selectedFolder?.files.length && (
             <GroupFilters
               selectedFolder={selectedFolder}
               createdBy={createdBy}
@@ -131,8 +149,8 @@ const DynamicReportDashboard = () => {
           )}
           {/* Render files of the selected folder */}
           <TabPanels>
-            {folders.map(
-              (folder) =>
+            {folders.map((folder) =>
+              !!selectedFolder?.files.length ? (
                 !!groupedFiles.length && (
                   <TabPanel key={folder.name}>
                     <div className='text-md font-semibold'>Files</div>
@@ -141,7 +159,7 @@ const DynamicReportDashboard = () => {
                         <button
                           key={file.name}
                           onClick={() => setData('selectedFile', file)}
-                          className={`px-4 py-2 rounded ${
+                          className={`px-4 py-2 rounded flex items-center ${
                             selectedFile?.name === file.name
                               ? 'bg-blue-500 text-white'
                               : 'bg-gray-200 hover:bg-gray-300'
@@ -154,6 +172,9 @@ const DynamicReportDashboard = () => {
                     </div>
                   </TabPanel>
                 )
+              ) : (
+                <NoFilesPage />
+              )
             )}
           </TabPanels>
         </Tabs>
@@ -186,7 +207,7 @@ const DynamicReportDashboard = () => {
               onPageChange={(page) => setData('currentPage', page)}
             />
           </>
-        ) : (
+        ) : !!selectedFolder?.files.length && (
           <NoResultsPage />
         )}
       </div>
